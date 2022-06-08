@@ -10,12 +10,18 @@ class GameService {
   }
 
   // TODO: figure out this matrix stuff
-  public async updateGame(socket: Socket, gameMatrix: any) {
-    socket.emit('update_game', { matrix: gameMatrix })
+  public async updateGame(socket: Socket, gameStoreInfo: any) {
+    socket.emit('update_game', gameStoreInfo)
   }
 
-  public async onGameUpdage(socket: Socket, listener: (matrix: any) => void) {
-    socket.on('on_game_update', ({ matrix }) => listener(matrix))
+  public async onGameUpdate(
+    socket: Socket,
+    listener: (gameStoreInfo: any) => void
+  ) {
+    socket.on('on_game_update', (gameStoreInfo) => {
+      console.log('game store info', gameStoreInfo)
+      return listener(gameStoreInfo)
+    })
   }
 }
 

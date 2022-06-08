@@ -31,6 +31,7 @@ export default observer(function JoinRoom({ store }) {
 
     if (joined) {
       store.setInRoom(true)
+      store.setRoomName(roomName)
       console.log('set in room: ', store.isInRoom)
     }
     setIsJoining(false)

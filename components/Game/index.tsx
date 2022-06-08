@@ -13,6 +13,8 @@ export default observer(function game({ store }: any) {
     }
   }, [])
 
+  useEffect(() => {}, [])
+
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-center bg-gray-700">
       <h1 className="text-6xl font-bold uppercase text-transparent bg-clip-text bg-gradient-to-br from-blue-500 to-green-500">

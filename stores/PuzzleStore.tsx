@@ -1,11 +1,14 @@
 import React from 'react'
 import words from '../words.json'
+import socketService from '../services/socketService'
+import gameService from '../services/gameService'
 
 export default {
   word: '',
   guesses: [''],
   currentGuess: 0,
   isInRoom: false,
+  roomName: '',
 
   //readonly functions
   get won() {
@@ -40,6 +43,16 @@ export default {
   submitGuess() {
     if (words.includes(this.guesses[this.currentGuess])) {
       this.currentGuess += 1
+      // get store to emit this.word, this.guesses, this.currentGuess, this.roomName
+      if (socketService.socket) { // this should probably not be in submit guess.
+        gameService.updateGame(socketService.socket, {// be in its own function
+          word: this.word,
+          guesses: this.guesses,
+          currentGuess: this.currentGuess,
+          roomName: this.roomName,
+          isInRoom: this.isInRoom,
+        })
+      }
     }
   },
   handleInput(e: React.KeyboardEvent | React.BaseSyntheticEvent): void {
@@ -68,15 +81,18 @@ export default {
       )
       return
     }
+    //key or click inputs for letters
     if (this.guesses[this.currentGuess].length < 6 && input.match(/^[A-z]$/)) {
       this.guesses[this.currentGuess] =
         this.guesses[this.currentGuess] + input.toLowerCase()
-      console.log(e)
     }
   },
 
   //socket function
   setInRoom(bool: boolean) {
     this.isInRoom = bool
+  },
+  setRoomName(roomName: string) {
+    this.roomName = roomName
   },
 }
