@@ -23,6 +23,11 @@ class GameService {
       return listener(gameStoreInfo)
     })
   }
+
+  public async onStartGame(socket: Socket, listener: (options: any) => void) {
+    socket.on('start_game', listener)
+    console.log('listener: ', listener)
+  }
 }
 
 export default new GameService()

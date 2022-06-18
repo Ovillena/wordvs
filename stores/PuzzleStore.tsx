@@ -9,6 +9,8 @@ export default {
   currentGuess: 0,
   isInRoom: false,
   roomName: '',
+  isPlayerTurn: false,
+  isGameStarted: false,
 
   //readonly functions
   get won() {
@@ -34,6 +36,29 @@ export default {
       .filter((letter) => this.allGuesses.includes(letter))
   },
 
+  //setters
+  setWord(word: string) {
+    this.word = word
+  },
+  setGuesses(guesses: string[]) {
+    this.guesses = guesses
+  },
+  setCurrentGuess(currentGuess: number) {
+    this.currentGuess = currentGuess
+  },
+  setIsInRoom(bool: boolean) {
+    this.isInRoom = bool
+  },
+  setRoomName(roomName: string) {
+    this.roomName = roomName
+  },
+  setIsPlayerTurn(turn: boolean) {
+    this.isPlayerTurn = turn
+  },
+  setIsGameStarted(bool: boolean) {
+    this.isGameStarted = bool
+  },
+
   //game functions
   init() {
     this.word = words[Math.round(Math.random() * words.length)]
@@ -44,8 +69,10 @@ export default {
     if (words.includes(this.guesses[this.currentGuess])) {
       this.currentGuess += 1
       // get store to emit this.word, this.guesses, this.currentGuess, this.roomName
-      if (socketService.socket) { // this should probably not be in submit guess.
-        gameService.updateGame(socketService.socket, {// be in its own function
+      if (socketService.socket) {
+        // this should probably not be in submit guess.
+        gameService.updateGame(socketService.socket, {
+          // be in its own function
           word: this.word,
           guesses: this.guesses,
           currentGuess: this.currentGuess,
@@ -86,13 +113,5 @@ export default {
       this.guesses[this.currentGuess] =
         this.guesses[this.currentGuess] + input.toLowerCase()
     }
-  },
-
-  //socket function
-  setInRoom(bool: boolean) {
-    this.isInRoom = bool
-  },
-  setRoomName(roomName: string) {
-    this.roomName = roomName
   },
 }

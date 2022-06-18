@@ -1,5 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { useEffect } from 'react'
+import gameService from '../../services/gameService'
+import socketService from '../../services/socketService'
 import Guess from '../Guess'
 import Querty from '../Qwerty'
 
@@ -13,7 +15,38 @@ export default observer(function game({ store }: any) {
     }
   }, [])
 
-  useEffect(() => {}, [])
+  const handleGameUpdate = () => {
+    if (socketService.socket) {
+      gameService.onGameUpdate(socketService.socket, (newStoreInfo: any) => {
+        console.log('new store info : ', newStoreInfo)
+        // add player turn
+        store.setWord(newStoreInfo.word)
+        store.setGuesses(newStoreInfo.guesses)
+        store.setCurrentGuess(newStoreInfo.currentGuess)
+        store.setIsInRoom(newStoreInfo.isInRoom)
+        store.setRoomName(newStoreInfo.roomName)
+      })
+    }
+  }
+
+  const handleGameStart = () => {
+    if (socketService.socket) {
+      gameService.onStartGame(socketService.socket, (options: any) => {
+        console.log('start_game : ', options)
+        store.setIsGameStarted(options.start)
+        if (options.start) {
+          store.setIsPlayerTurn(options.turn)
+        } else {
+          store.setIsPlayerTurn(false)
+        }
+      })
+    }
+  }
+
+  useEffect(() => {
+    handleGameUpdate()
+    handleGameStart()
+  }, [])
 
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-center bg-gray-700">
@@ -29,7 +62,11 @@ export default observer(function game({ store }: any) {
         />
       ))}
       word: {store.word} <br></br>
-      guesses: {JSON.stringify(store.guesses)}
+      guesses: {JSON.stringify(store.guesses)} <br></br>
+      is in room : {store.isInRoom.toString()} <br></br>
+      room name : {store.roomName} <br></br>
+      is turn : {store.isPlayerTurn.toString()} <br></br>
+      is Game started : {store.isGameStarted.toString()} <br></br>
       {store.won && <h1>You win!</h1>}
       {store.lost && <h1>You lose...</h1>}
       {(store.won || store.lost) && (
