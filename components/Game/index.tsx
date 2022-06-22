@@ -25,6 +25,7 @@ export default observer(function game({ store }: any) {
         store.setCurrentGuess(newStoreInfo.currentGuess)
         store.setIsInRoom(newStoreInfo.isInRoom)
         store.setRoomName(newStoreInfo.roomName)
+        store.setIsPlayerTurn(newStoreInfo.turn)
       })
     }
   }
@@ -67,7 +68,8 @@ export default observer(function game({ store }: any) {
       room name : {store.roomName} <br></br>
       is turn : {store.isPlayerTurn.toString()} <br></br>
       is Game started : {store.isGameStarted.toString()} <br></br>
-      {store.won && <h1>You win!</h1>}
+      {store.won && store.isPlayerTurn && <h1>The Other Guy Wins!</h1>}
+      {store.won && !store.isPlayerTurn && <h1>You Win!</h1>}
       {store.lost && <h1>You lose...</h1>}
       {(store.won || store.lost) && (
         <button onClick={store.init}>Play Again!</button>

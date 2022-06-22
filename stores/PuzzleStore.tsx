@@ -68,6 +68,7 @@ export default {
   submitGuess() {
     if (words.includes(this.guesses[this.currentGuess])) {
       this.currentGuess += 1
+
       // get store to emit this.word, this.guesses, this.currentGuess, this.roomName
       if (socketService.socket) {
         // this should probably not be in submit guess.
@@ -78,11 +79,18 @@ export default {
           currentGuess: this.currentGuess,
           roomName: this.roomName,
           isInRoom: this.isInRoom,
+          turn: true,
         })
       }
+      //set player turn to false after submitting
+      this.setIsPlayerTurn(false)
     }
   },
   handleInput(e: React.KeyboardEvent | React.BaseSyntheticEvent): void {
+    if (!this.isPlayerTurn) {
+      return
+    }
+
     let input
 
     //check if click from Qwerty or keyup
