@@ -16,7 +16,7 @@ class SocketService {
       })
 
       this.socket.on('connect_error', (err) => {
-        console.log('Connection Error: ', err)
+        console.log('connection Error: ', err)
         reject(err)
       })
     })

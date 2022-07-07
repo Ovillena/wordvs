@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { IJoinRoomProps } from '../../Interfaces'
 import { observer } from 'mobx-react-lite'
-import PuzzleStore from '../../stores/PuzzleStore'
+import gameStore from '../../stores/GameStore'
 import socketService from '../../services/socketService'
 import gameService from '../../services/gameService'
 
-export default observer(function JoinRoom({ store }) {
+export default observer(function JoinRoom({ store }:any) {
   const [roomName, setRoomName] = useState('')
   const [isJoining, setIsJoining] = useState(false)
 

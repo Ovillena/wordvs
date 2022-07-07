@@ -1,11 +1,14 @@
 import { observer } from 'mobx-react-lite'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import gameService from '../../services/gameService'
 import socketService from '../../services/socketService'
 import Guess from '../Guess'
 import Querty from '../Qwerty'
+import Chat from '../Chat'
 
 export default observer(function game({ store }: any) {
+  const [isChatMode, setIsChatMode] = useState(false)
+
   useEffect(() => {
     store.init()
     window.addEventListener('keyup', store.handleInput)
@@ -50,31 +53,47 @@ export default observer(function game({ store }: any) {
   }, [])
 
   return (
-    <div className="flex h-screen w-screen flex-col items-center justify-center bg-gray-700">
-      <h1 className="text-6xl font-bold uppercase text-transparent bg-clip-text bg-gradient-to-br from-blue-500 to-green-500">
-        WordVS
-      </h1>
-      {store.guesses.map((_: any, i: number) => (
-        <Guess
-          key={i}
-          word={store.word}
-          guess={store.guesses[i]}
-          isGuessed={i < store.currentGuess}
-        />
-      ))}
-      word: {store.word} <br></br>
-      guesses: {JSON.stringify(store.guesses)} <br></br>
-      is in room : {store.isInRoom.toString()} <br></br>
-      room name : {store.roomName} <br></br>
-      is turn : {store.isPlayerTurn.toString()} <br></br>
-      is Game started : {store.isGameStarted.toString()} <br></br>
-      {store.won && store.isPlayerTurn && <h1>The Other Guy Wins!</h1>}
-      {store.won && !store.isPlayerTurn && <h1>You Win!</h1>}
-      {store.lost && <h1>You lose...</h1>}
-      {(store.won || store.lost) && (
-        <button onClick={store.init}>Play Again!</button>
+    <div className="flex items-start bg-gray-700">
+      <button
+        onClick={() => {
+          setIsChatMode(!isChatMode)
+        }}
+      >
+        {isChatMode ? 'Game' : 'Chat'}
+      </button>
+      {!isChatMode && (
+        <div className="flex h-screen w-screen flex-col items-center justify-center bg-gray-700">
+          <h1 className="text-6xl font-bold uppercase text-transparent bg-clip-text bg-gradient-to-br from-blue-500 to-green-500">
+            WordVS
+          </h1>
+          {store.guesses.map((_: any, i: number) => (
+            <Guess
+              key={i}
+              word={store.word}
+              guess={store.guesses[i]}
+              isGuessed={i < store.currentGuess}
+            />
+          ))}
+          word: {store.word} <br></br>
+          guesses: {JSON.stringify(store.guesses)} <br></br>
+          is in room : {store.isInRoom.toString()} <br></br>
+          room name : {store.roomName} <br></br>
+          is turn : {store.isPlayerTurn.toString()} <br></br>
+          is Game started : {store.isGameStarted.toString()} <br></br>
+          {store.won && store.isPlayerTurn && <h1>The Other Guy Wins!</h1>}
+          {store.won && !store.isPlayerTurn && <h1>You Win!</h1>}
+          {store.lost && <h1>You both lose...</h1>}
+          {(store.won || store.lost) && (
+            <button onClick={store.init}>Play Again!</button>
+          )}
+          <Querty store={store} />
+        </div>
       )}
-      <Querty store={store} />
+      {isChatMode && (
+        <div className="flex justify-center">
+          <Chat gameStore={store}></Chat>
+        </div>
+      )}
     </div>
   )
 })

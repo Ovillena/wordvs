@@ -9,7 +9,6 @@ class GameService {
     })
   }
 
-  // TODO: figure out this matrix stuff
   public async updateGame(socket: Socket, gameStoreInfo: any) {
     socket.emit('update_game', gameStoreInfo)
   }
