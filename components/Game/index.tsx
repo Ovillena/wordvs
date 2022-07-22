@@ -6,10 +6,11 @@ import Guess from '../Guess'
 import Querty from '../Qwerty'
 import Chat from '../Chat'
 
-export default observer(function game({ store }: any) {
+export default observer(function game({ store, chatStore }: any) {
   const [isChatMode, setIsChatMode] = useState(false)
 
   useEffect(() => {
+    console.log('chatStore chat: ', chatStore.chat)
     store.init()
     window.addEventListener('keyup', store.handleInput)
 
@@ -91,7 +92,7 @@ export default observer(function game({ store }: any) {
       )}
       {isChatMode && (
         <div className="flex justify-center">
-          <Chat gameStore={store}></Chat>
+          <Chat gameStore={store} chatStore={chatStore}></Chat>
         </div>
       )}
     </div>

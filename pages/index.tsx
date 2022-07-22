@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react'
 import Guess from '../components/Guess'
 import JoinRoom from '../components/JoinRoom'
 import Querty from '../components/Qwerty'
-import gameStore from '../stores/GameStore'
+import GameStore from '../stores/GameStore'
+import ChatStore from '../stores/ChatStore'
 import Game from '../components/Game'
 
 export default observer(function Home() {
@@ -11,7 +12,8 @@ export default observer(function Home() {
   const [isPlayerTurn, setIsPlayerTurn] = useState(false)
   const [isGameStarted, setIsGameStarted] = useState(false)
   const [isChatMode, setIsChatMode] = useState(false)
-  const store = useLocalObservable(() => gameStore)
+  const chatStore = useLocalObservable(() => ChatStore)
+  const store = useLocalObservable(() => GameStore)
   useEffect(() => {
     setIsInRoom(store.isInRoom)
     setIsGameStarted(store.isGameStarted)
@@ -27,7 +29,7 @@ export default observer(function Home() {
         </>
       )}
       {!isInRoom && <JoinRoom store={store} />}
-      {isInRoom && !isChatMode && <Game store={store} />}
+      {isInRoom && !isChatMode && <Game store={store} chatStore={chatStore} />}
     </>
   )
 })

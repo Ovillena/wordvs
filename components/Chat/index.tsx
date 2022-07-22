@@ -3,15 +3,17 @@ import { useState, useEffect } from 'react'
 import gameService from '../../services/gameService'
 import chatService from '../../services/chatService'
 import socketService from '../../services/socketService'
-import chatStore from '../../stores/ChatStore'
 import ScrollToBottom from 'react-scroll-to-bottom'
 
-export default observer(function chat({ gameStore }: any) {
+export default observer(function chat({ gameStore, chatStore }: any) {
   const [currentMessage, setCurrentMessage] = useState('')
   const [messageList, setMessageList] = useState([])
 
   useEffect(() => {
     setMessageList(chatStore.chat)
+
+    console.log('chatttt: ', messageList)
+    console.log('chattttStore: ', chatStore.chat)
   }, [chatStore.chat])
 
   const handleSendMessage = () => {
@@ -27,7 +29,7 @@ export default observer(function chat({ gameStore }: any) {
     if (currentMessage !== '') {
       chatStore.submitMessage(
         'usernamePlaceholder',
-        gameStore.roomName, //TODO: make not undefined
+        gameStore.roomName,
         messageData
       )
     }
@@ -75,7 +77,8 @@ export default observer(function chat({ gameStore }: any) {
               return (
                 <div
                   className="message"
-                  id={username === messageContent.author ? 'you' : 'other'}
+                  key={`${messageContent.time}${messageContent.author}`}
+                  id={'placeholder' === messageContent.author ? 'you' : 'other'}
                 >
                   <div>
                     <div className="message-content">

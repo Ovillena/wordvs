@@ -1,14 +1,16 @@
 import React from 'react'
-import words from '../words.json'
 import socketService from '../services/socketService'
 import gameService from '../services/gameService'
 import chatService from '../services/chatService'
 
 export default {
   chat: [],
+
   submitMessage(username: string, roomName: string, messageData: any) {
-    this.chat.push({ messageData })
-    console.log('chat chat', this.chat)
+    this.chat = [...this.chat, messageData]
+    // this.chat= { messageData })
+    console.log('chat Store Chat: ', this.chat)
+    console.log('chat Store messageData: ', messageData)
 
     if (socketService.socket) {
       chatService.updateChat(socketService.socket, {
