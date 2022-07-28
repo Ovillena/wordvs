@@ -13,7 +13,8 @@ export default observer(function game({ store, chatStore }: any) {
     console.log('chatStore chat: ', chatStore.chat)
     store.init()
     window.addEventListener('keyup', store.handleInput)
-
+    handleGameUpdate()
+    handleGameStart()
     return () => {
       window.removeEventListener('keyup', store.handleInput)
     }
@@ -41,6 +42,7 @@ export default observer(function game({ store, chatStore }: any) {
         store.setIsGameStarted(options.start)
         if (options.start) {
           store.setIsPlayerTurn(options.turn)
+          store.setPlayer(options.player)
         } else {
           store.setIsPlayerTurn(false)
         }
@@ -48,10 +50,10 @@ export default observer(function game({ store, chatStore }: any) {
     }
   }
 
-  useEffect(() => {
-    handleGameUpdate()
-    handleGameStart()
-  }, [])
+  //   useEffect(() => {
+  //     handleGameUpdate()
+  //     handleGameStart()
+  //   }, [])
 
   return (
     <div className="flex items-start bg-gray-700">
@@ -81,6 +83,7 @@ export default observer(function game({ store, chatStore }: any) {
           room name : {store.roomName} <br></br>
           is turn : {store.isPlayerTurn.toString()} <br></br>
           is Game started : {store.isGameStarted.toString()} <br></br>
+          You are player {(store.player + 1).toString()} <br></br>
           {store.won && store.isPlayerTurn && <h1>The Other Guy Wins!</h1>}
           {store.won && !store.isPlayerTurn && <h1>You Win!</h1>}
           {store.lost && <h1>You both lose...</h1>}

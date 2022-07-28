@@ -6,9 +6,12 @@ import chatService from '../services/chatService'
 export default {
   chat: [],
 
+  setChat(newChatData: any) {
+    this.chat = newChatData
+  },
+
   submitMessage(username: string, roomName: string, messageData: any) {
     this.chat = [...this.chat, messageData]
-    // this.chat= { messageData })
     console.log('chat Store Chat: ', this.chat)
     console.log('chat Store messageData: ', messageData)
 

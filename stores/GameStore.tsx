@@ -11,6 +11,7 @@ export default {
   roomName: '',
   isPlayerTurn: false,
   isGameStarted: false,
+  player: 0,
 
   //readonly functions
   get won() {
@@ -57,6 +58,9 @@ export default {
   },
   setIsGameStarted(bool: boolean) {
     this.isGameStarted = bool
+  },
+  setPlayer(player:number){
+    this.player=player
   },
 
   //game functions

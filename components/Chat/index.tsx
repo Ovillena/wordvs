@@ -11,27 +11,35 @@ export default observer(function chat({ gameStore, chatStore }: any) {
 
   useEffect(() => {
     setMessageList(chatStore.chat)
-
-    console.log('chatttt: ', messageList)
+    handleChatUpdate()
     console.log('chattttStore: ', chatStore.chat)
   }, [chatStore.chat])
 
   const handleSendMessage = () => {
+    const currentTime = new Date(Date.now())
     const messageData = {
       roomName: gameStore.roomName,
-      author: 'playerPlaceHolder',
+      author: gameStore.player,
       message: currentMessage,
       time:
-        new Date(Date.now()).getHours() +
+        currentTime.getHours() +
         ':' +
-        new Date(Date.now()).getMinutes(),
+        currentTime.getMinutes() +
+        ':' +
+        currentTime.getSeconds(),
     }
     if (currentMessage !== '') {
-      chatStore.submitMessage(
-        'usernamePlaceholder',
-        gameStore.roomName,
-        messageData
-      )
+      chatStore.submitMessage(gameStore.player, gameStore.roomName, messageData)
+    }
+  }
+
+  const handleChatUpdate = () => {
+    if (socketService.socket) {
+      chatService.onChatUpdate(socketService.socket, (newChatInfo: any) => {
+        console.log('new chat info : ', JSON.stringify(newChatInfo.chat))
+        // add player turn
+        chatStore.setChat(newChatInfo.chat)
+      })
     }
   }
 
@@ -78,7 +86,9 @@ export default observer(function chat({ gameStore, chatStore }: any) {
                 <div
                   className="message"
                   key={`${messageContent.time}${messageContent.author}`}
-                  id={'placeholder' === messageContent.author ? 'you' : 'other'}
+                  id={
+                    gameStore.player === messageContent.author ? 'you' : 'other'
+                  }
                 >
                   <div>
                     <div className="message-content">
@@ -86,7 +96,7 @@ export default observer(function chat({ gameStore, chatStore }: any) {
                     </div>
                     <div className="message-meta">
                       <p id="time">{messageContent.time}</p>
-                      <p id="author">{messageContent.author}</p>
+                      <p id="author">Player {messageContent.author + 1}</p>
                     </div>
                   </div>
                 </div>
