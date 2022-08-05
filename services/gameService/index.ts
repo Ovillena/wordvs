@@ -1,4 +1,5 @@
 import { Socket } from 'socket.io-client'
+import { IGameStoreInfo, IStartGameOptions } from '../../Interfaces'
 
 class GameService {
   public async joinGameRoom(socket: Socket, roomId: string): Promise<boolean> {
@@ -9,13 +10,13 @@ class GameService {
     })
   }
 
-  public async updateGame(socket: Socket, gameStoreInfo: any) {
+  public async updateGame(socket: Socket, gameStoreInfo: IGameStoreInfo) {
     socket.emit('update_game', gameStoreInfo)
   }
 
   public async onGameUpdate(
     socket: Socket,
-    listener: (gameStoreInfo: any) => void
+    listener: (gameStoreInfo: IGameStoreInfo) => void
   ) {
     socket.on('on_game_update', (gameStoreInfo) => {
       console.log('game store info', gameStoreInfo)
@@ -23,7 +24,10 @@ class GameService {
     })
   }
 
-  public async onStartGame(socket: Socket, listener: (options: any) => void) {
+  public async onStartGame(
+    socket: Socket,
+    listener: (options: IStartGameOptions) => void
+  ) {
     socket.on('start_game', listener)
     console.log('listener: ', listener)
   }

@@ -1,17 +1,11 @@
-export interface IGuessComp {
-  isGuessed: boolean
-  guess: string
-  word: string
-}
-
-export interface IJoinRoomProps {}
-
+// start game VVVVVVVVVVVVVVVVVVVVVVVVV
 export interface IStartGameOptions {
   start: boolean
   turn: boolean
   player: number // corresponds to player number, could be username at some point
 }
-
+//
+// game store VVVVVVVVVVVVVVVVVVVVVVVVV
 export interface IGameStoreInfo {
   word: string
   guesses: Array<string>
@@ -40,7 +34,13 @@ export interface IGameStore extends IGameStoreInfo {
   submitGuess(): void
   handleInput(e: React.KeyboardEvent | React.BaseSyntheticEvent): void
 }
-
+export interface IGuessComp {
+  isGuessed: boolean
+  guess: string
+  word: string
+}
+//
+// chat store VVVVVVVVVVVVVVVVVVVVVVVVV
 export interface IChatData {
   roomName: string
   author: number //corresponds to the player number for now. Could change it to username at some point
@@ -57,7 +57,8 @@ export interface IChatStore {
   setChat(newChatData: Array<IChatData>): void
   submitMessage(username: string, roomName: string, messageData: any): void
 }
-
+//
+// stores VVVVVVVVVVVVVVVVVVVVVVVVV
 export interface IStores {
   gameStore: IGameStore
   chatStore: IChatStore
