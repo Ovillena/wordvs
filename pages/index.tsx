@@ -28,7 +28,7 @@ export default observer(function Home() {
           </h1>
         </>
       )}
-      {!isInRoom && <JoinRoom store={gameStore} />}
+      {!isInRoom && <JoinRoom gameStore={gameStore} />}
       {isInRoom && !isChatMode && (
         <Game gameStore={gameStore} chatStore={chatStore} />
       )}

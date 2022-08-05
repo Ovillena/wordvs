@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
-import { IJoinRoomProps } from '../../Interfaces'
+import { IJoinRoomProps, IOnlyGameStore } from '../../Interfaces'
 import { observer } from 'mobx-react-lite'
 import gameStore from '../../stores/GameStore'
 import socketService from '../../services/socketService'
 import gameService from '../../services/gameService'
 
-export default observer(function JoinRoom({ store }:any) {
+export default observer(function JoinRoom({ gameStore }: IOnlyGameStore) {
   const [roomName, setRoomName] = useState('')
   const [isJoining, setIsJoining] = useState(false)
 
@@ -30,8 +30,8 @@ export default observer(function JoinRoom({ store }:any) {
       })
 
     if (joined) {
-      store.setIsInRoom(true)
-      store.setRoomName(roomName)
+      gameStore.setIsInRoom(true)
+      gameStore.setRoomName(roomName)
     }
     setIsJoining(false)
   }
