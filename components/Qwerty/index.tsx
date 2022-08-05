@@ -1,11 +1,12 @@
 import { observer } from 'mobx-react-lite'
+import { IOnlyGameStore } from '../../Interfaces'
 import Key from './key'
 
-export default observer(function Qwerty({ gameStore }) {
+export default observer(function Qwerty({ gameStore }: IOnlyGameStore) {
   const qwerty = ['qwertyuiop', 'asdfghjkl', 'zxcvbnm']
   return (
     <div>
-      {qwerty.map((row) => (
+      {qwerty.map((row: string) => (
         <div key={row} className="flex justify-center">
           {row === 'zxcvbnm' && (
             <Key
