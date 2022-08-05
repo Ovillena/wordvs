@@ -6,17 +6,17 @@ import Guess from '../Guess'
 import Querty from '../Qwerty'
 import Chat from '../Chat'
 
-export default observer(function game({ store, chatStore }: any) {
+export default observer(function game({ gameStore, chatStore }: any) {
   const [isChatMode, setIsChatMode] = useState(false)
 
   useEffect(() => {
     console.log('chatStore chat: ', chatStore.chat)
-    store.init()
-    window.addEventListener('keyup', store.handleInput)
+    gameStore.init()
+    window.addEventListener('keyup', gameStore.handleInput)
     handleGameUpdate()
     handleGameStart()
     return () => {
-      window.removeEventListener('keyup', store.handleInput)
+      window.removeEventListener('keyup', gameStore.handleInput)
     }
   }, [])
 
@@ -25,12 +25,12 @@ export default observer(function game({ store, chatStore }: any) {
       gameService.onGameUpdate(socketService.socket, (newStoreInfo: any) => {
         console.log('new store info : ', newStoreInfo)
         // add player turn
-        store.setWord(newStoreInfo.word)
-        store.setGuesses(newStoreInfo.guesses)
-        store.setCurrentGuess(newStoreInfo.currentGuess)
-        store.setIsInRoom(newStoreInfo.isInRoom)
-        store.setRoomName(newStoreInfo.roomName)
-        store.setIsPlayerTurn(newStoreInfo.turn)
+        gameStore.setWord(newStoreInfo.word)
+        gameStore.setGuesses(newStoreInfo.guesses)
+        gameStore.setCurrentGuess(newStoreInfo.currentGuess)
+        gameStore.setIsInRoom(newStoreInfo.isInRoom)
+        gameStore.setRoomName(newStoreInfo.roomName)
+        gameStore.setIsPlayerTurn(newStoreInfo.turn)
       })
     }
   }
@@ -39,12 +39,12 @@ export default observer(function game({ store, chatStore }: any) {
     if (socketService.socket) {
       gameService.onStartGame(socketService.socket, (options: any) => {
         console.log('start_game : ', options)
-        store.setIsGameStarted(options.start)
+        gameStore.setIsGameStarted(options.start)
         if (options.start) {
-          store.setIsPlayerTurn(options.turn)
-          store.setPlayer(options.player)
+          gameStore.setIsPlayerTurn(options.turn)
+          gameStore.setPlayer(options.player)
         } else {
-          store.setIsPlayerTurn(false)
+          gameStore.setIsPlayerTurn(false)
         }
       })
     }
@@ -70,33 +70,35 @@ export default observer(function game({ store, chatStore }: any) {
           <h1 className="text-6xl font-bold uppercase text-transparent bg-clip-text bg-gradient-to-br from-blue-500 to-green-500">
             WordVS
           </h1>
-          {store.guesses.map((_: any, i: number) => (
+          {gameStore.guesses.map((_: any, i: number) => (
             <Guess
               key={i}
-              word={store.word}
-              guess={store.guesses[i]}
-              isGuessed={i < store.currentGuess}
+              word={gameStore.word}
+              guess={gameStore.guesses[i]}
+              isGuessed={i < gameStore.currentGuess}
             />
           ))}
-          word: {store.word} <br></br>
-          guesses: {JSON.stringify(store.guesses)} <br></br>
-          is in room : {store.isInRoom.toString()} <br></br>
-          room name : {store.roomName} <br></br>
-          is turn : {store.isPlayerTurn.toString()} <br></br>
-          is Game started : {store.isGameStarted.toString()} <br></br>
-          You are player {(store.player + 1).toString()} <br></br>
-          {store.won && store.isPlayerTurn && <h1>The Other Guy Wins!</h1>}
-          {store.won && !store.isPlayerTurn && <h1>You Win!</h1>}
-          {store.lost && <h1>You both lose...</h1>}
-          {(store.won || store.lost) && (
-            <button onClick={store.init}>Play Again!</button>
+          word: {gameStore.word} <br></br>
+          guesses: {JSON.stringify(gameStore.guesses)} <br></br>
+          is in room : {gameStore.isInRoom.toString()} <br></br>
+          room name : {gameStore.roomName} <br></br>
+          is turn : {gameStore.isPlayerTurn.toString()} <br></br>
+          is Game started : {gameStore.isGameStarted.toString()} <br></br>
+          You are player {(gameStore.player + 1).toString()} <br></br>
+          {gameStore.won && gameStore.isPlayerTurn && (
+            <h1>The Other Guy Wins!</h1>
           )}
-          <Querty store={store} />
+          {gameStore.won && !gameStore.isPlayerTurn && <h1>You Win!</h1>}
+          {gameStore.lost && <h1>You both lose...</h1>}
+          {(gameStore.won || gameStore.lost) && (
+            <button onClick={gameStore.init}>Play Again!</button>
+          )}
+          <Querty gameStore={gameStore} />
         </div>
       )}
       {isChatMode && (
         <div className="flex justify-center">
-          <Chat gameStore={store} chatStore={chatStore}></Chat>
+          <Chat gameStore={gameStore} chatStore={chatStore}></Chat>
         </div>
       )}
     </div>

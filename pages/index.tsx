@@ -13,11 +13,11 @@ export default observer(function Home() {
   const [isGameStarted, setIsGameStarted] = useState(false)
   const [isChatMode, setIsChatMode] = useState(false)
   const chatStore = useLocalObservable(() => ChatStore)
-  const store = useLocalObservable(() => GameStore)
+  const gameStore = useLocalObservable(() => GameStore)
   useEffect(() => {
-    setIsInRoom(store.isInRoom)
-    setIsGameStarted(store.isGameStarted)
-  }, [store.isInRoom, store.isPlayerTurn, store.isGameStarted])
+    setIsInRoom(gameStore.isInRoom)
+    setIsGameStarted(gameStore.isGameStarted)
+  }, [gameStore.isInRoom, gameStore.isPlayerTurn, gameStore.isGameStarted])
 
   return (
     <>
@@ -28,8 +28,10 @@ export default observer(function Home() {
           </h1>
         </>
       )}
-      {!isInRoom && <JoinRoom store={store} />}
-      {isInRoom && !isChatMode && <Game store={store} chatStore={chatStore} />}
+      {!isInRoom && <JoinRoom store={gameStore} />}
+      {isInRoom && !isChatMode && (
+        <Game gameStore={gameStore} chatStore={chatStore} />
+      )}
     </>
   )
 })

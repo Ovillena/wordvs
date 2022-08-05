@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import Key from './key'
 
-export default observer(function Qwerty({ store }) {
+export default observer(function Qwerty({ gameStore }) {
   const qwerty = ['qwertyuiop', 'asdfghjkl', 'zxcvbnm']
   return (
     <div>
@@ -11,15 +11,15 @@ export default observer(function Qwerty({ store }) {
             <Key
               key="backspace"
               char="backspace"
-              clickInput={store.handleInput}
+              clickInput={gameStore.handleInput}
             />
           )}
           {row.split('').map((char) => {
-            const bgColor = store.exactGuesses.includes(char)
+            const bgColor = gameStore.exactGuesses.includes(char)
               ? 'bg-green-400'
-              : store.inexactGuesses.includes(char)
+              : gameStore.inexactGuesses.includes(char)
               ? 'bg-yellow-400'
-              : store.allGuesses.includes(char)
+              : gameStore.allGuesses.includes(char)
               ? 'bg-gray-800 text-gray-400'
               : 'bg-gray-200'
 
@@ -27,13 +27,13 @@ export default observer(function Qwerty({ store }) {
               <Key
                 key={char}
                 char={char}
-                clickInput={store.handleInput}
+                clickInput={gameStore.handleInput}
                 bgColor={bgColor}
               />
             )
           })}
           {row === 'zxcvbnm' && (
-            <Key key="enter" char="enter" clickInput={store.handleInput} />
+            <Key key="enter" char="enter" clickInput={gameStore.handleInput} />
           )}
         </div>
       ))}
