@@ -5,8 +5,9 @@ import socketService from '../../services/socketService'
 import Guess from '../Guess'
 import Querty from '../Qwerty'
 import Chat from '../Chat'
+import { IGameStoreInfo, IStores } from '../../Interfaces'
 
-export default observer(function game({ gameStore, chatStore }: any) {
+export default observer(function game({ gameStore, chatStore }: IStores) {
   const [isChatMode, setIsChatMode] = useState(false)
 
   useEffect(() => {
@@ -22,7 +23,7 @@ export default observer(function game({ gameStore, chatStore }: any) {
 
   const handleGameUpdate = () => {
     if (socketService.socket) {
-      gameService.onGameUpdate(socketService.socket, (newStoreInfo: any) => {
+      gameService.onGameUpdate(socketService.socket, (newStoreInfo: IGameStoreInfo) => {
         console.log('new store info : ', newStoreInfo)
         // add player turn
         gameStore.setWord(newStoreInfo.word)
@@ -30,7 +31,7 @@ export default observer(function game({ gameStore, chatStore }: any) {
         gameStore.setCurrentGuess(newStoreInfo.currentGuess)
         gameStore.setIsInRoom(newStoreInfo.isInRoom)
         gameStore.setRoomName(newStoreInfo.roomName)
-        gameStore.setIsPlayerTurn(newStoreInfo.turn)
+        gameStore.setIsPlayerTurn(newStoreInfo.isPlayerTurn)
       })
     }
   }

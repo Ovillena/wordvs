@@ -59,8 +59,8 @@ export default {
   setIsGameStarted(bool: boolean) {
     this.isGameStarted = bool
   },
-  setPlayer(player:number){
-    this.player=player
+  setPlayer(player: number) {
+    this.player = player
   },
 
   //game functions
@@ -83,7 +83,7 @@ export default {
           currentGuess: this.currentGuess,
           roomName: this.roomName,
           isInRoom: this.isInRoom,
-          turn: true,
+          isPlayerTurn: true,
         })
       }
       //set player turn to false after submitting
