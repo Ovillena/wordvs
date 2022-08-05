@@ -50,6 +50,7 @@ export interface IChatData {
 export interface IChatInfo {
   roomName: string
   chat: Array<IChatData>
+  username?: string
 }
 export interface IChatStore {
   chat: Array<IChatData>
