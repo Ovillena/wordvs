@@ -1,8 +1,9 @@
 export default function Key({
   char = '',
   bgColor = 'bg-gray-200',
-  clickInput = () => {
-    console.log('click')
+  clickInput = (char: string) => {
+    console.log(char)
+    //default function. prop passed in from parent component takes over
   },
 }) {
   const width =
