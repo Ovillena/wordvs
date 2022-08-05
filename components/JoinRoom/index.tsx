@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { IJoinRoomProps, IOnlyGameStore } from '../../Interfaces'
+import { IOnlyGameStore } from '../../Interfaces'
 import { observer } from 'mobx-react-lite'
 import gameStore from '../../stores/GameStore'
 import socketService from '../../services/socketService'
