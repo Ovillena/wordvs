@@ -5,7 +5,7 @@ import socketService from '../../services/socketService'
 import Guess from '../Guess'
 import Querty from '../Qwerty'
 import Chat from '../Chat'
-import { IGameStoreInfo, IStores } from '../../Interfaces'
+import { IGameStoreInfo, IStartGameOptions, IStores } from '../../Interfaces'
 
 export default observer(function game({ gameStore, chatStore }: IStores) {
   const [isChatMode, setIsChatMode] = useState(false)
@@ -23,31 +23,37 @@ export default observer(function game({ gameStore, chatStore }: IStores) {
 
   const handleGameUpdate = () => {
     if (socketService.socket) {
-      gameService.onGameUpdate(socketService.socket, (newStoreInfo: IGameStoreInfo) => {
-        console.log('new store info : ', newStoreInfo)
-        // add player turn
-        gameStore.setWord(newStoreInfo.word)
-        gameStore.setGuesses(newStoreInfo.guesses)
-        gameStore.setCurrentGuess(newStoreInfo.currentGuess)
-        gameStore.setIsInRoom(newStoreInfo.isInRoom)
-        gameStore.setRoomName(newStoreInfo.roomName)
-        gameStore.setIsPlayerTurn(newStoreInfo.isPlayerTurn)
-      })
+      gameService.onGameUpdate(
+        socketService.socket,
+        (newStoreInfo: IGameStoreInfo) => {
+          console.log('new store info : ', newStoreInfo)
+          // add player turn
+          gameStore.setWord(newStoreInfo.word)
+          gameStore.setGuesses(newStoreInfo.guesses)
+          gameStore.setCurrentGuess(newStoreInfo.currentGuess)
+          gameStore.setIsInRoom(newStoreInfo.isInRoom)
+          gameStore.setRoomName(newStoreInfo.roomName)
+          gameStore.setIsPlayerTurn(newStoreInfo.isPlayerTurn)
+        }
+      )
     }
   }
 
   const handleGameStart = () => {
     if (socketService.socket) {
-      gameService.onStartGame(socketService.socket, (options: any) => {
-        console.log('start_game : ', options)
-        gameStore.setIsGameStarted(options.start)
-        if (options.start) {
-          gameStore.setIsPlayerTurn(options.turn)
-          gameStore.setPlayer(options.player)
-        } else {
-          gameStore.setIsPlayerTurn(false)
+      gameService.onStartGame(
+        socketService.socket,
+        (options: IStartGameOptions) => {
+          console.log('start_game : ', options)
+          gameStore.setIsGameStarted(options.start)
+          if (options.start) {
+            gameStore.setIsPlayerTurn(options.turn)
+            gameStore.setPlayer(options.player)
+          } else {
+            gameStore.setIsPlayerTurn(false)
+          }
         }
-      })
+      )
     }
   }
 
@@ -71,7 +77,7 @@ export default observer(function game({ gameStore, chatStore }: IStores) {
           <h1 className="text-6xl font-bold uppercase text-transparent bg-clip-text bg-gradient-to-br from-blue-500 to-green-500">
             WordVS
           </h1>
-          {gameStore.guesses.map((_: any, i: number) => (
+          {gameStore.guesses.map((_: string, i: number) => (
             <Guess
               key={i}
               word={gameStore.word}
