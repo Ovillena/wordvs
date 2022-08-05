@@ -9,7 +9,7 @@ export default observer(function JoinRoom({ gameStore }: IOnlyGameStore) {
   const [roomName, setRoomName] = useState('')
   const [isJoining, setIsJoining] = useState(false)
 
-  const handleRoomNameChange = (e: React.ChangeEvent<any>) => {
+  const handleRoomNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     setRoomName(value)
   }

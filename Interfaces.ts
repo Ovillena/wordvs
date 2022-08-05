@@ -55,7 +55,7 @@ export interface IChatInfo {
 export interface IChatStore {
   chat: Array<IChatData>
   setChat(newChatData: Array<IChatData>): void
-  submitMessage(username: string, roomName: string, messageData: any): void
+  submitMessage(username: string, roomName: string, messageData: IChatData): void
 }
 //
 // stores VVVVVVVVVVVVVVVVVVVVVVVVV
