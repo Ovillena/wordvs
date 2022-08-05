@@ -74,7 +74,12 @@ export default observer(function chat({ gameStore, chatStore }: IStores) {
                     </div>
                     <div className="message-meta">
                       <p id="time">{messageContent.time}</p>
-                      <p id="author">Player {messageContent.author + 1}</p>
+                      <p id="author">
+                        Player {messageContent.author + 1}
+                        {gameStore.player === messageContent.author
+                          ? '(you)'
+                          : '(opponent)'}
+                      </p>
                     </div>
                   </div>
                 </div>

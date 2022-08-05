@@ -2,15 +2,16 @@ import React from 'react'
 import socketService from '../services/socketService'
 import gameService from '../services/gameService'
 import chatService from '../services/chatService'
+import { IChatData } from '../Interfaces'
 
 export default {
   chat: [],
 
-  setChat(newChatData: any) {
+  setChat(newChatData: Array<IChatData>): void {
     this.chat = newChatData
   },
 
-  submitMessage(username: string, roomName: string, messageData: any) {
+  submitMessage(username: string, roomName: string, messageData: IChatData) {
     this.chat = [...this.chat, messageData]
     console.log('chat Store Chat: ', this.chat)
     console.log('chat Store messageData: ', messageData)
