@@ -8,12 +8,27 @@ import { IChatData, IChatInfo, IStores } from '../../Interfaces'
 
 export default observer(function chat({ gameStore, chatStore }: IStores) {
   const [currentMessage, setCurrentMessage] = useState('')
-  const [messageList, setMessageList] = useState([])
+  const [messageList, setMessageList] = useState([
+    {
+      roomName: '',
+      author: 0,
+      message: '',
+      time: '',
+    },
+  ])
 
   useEffect(() => {
-    setMessageList(chatStore.chat)
+    if (
+      chatStore.chat[0].roomName === '' &&
+      chatStore.chat[0].author === 0 &&
+      chatStore.chat[0].message === '' &&
+      chatStore.chat[0].time === ''
+    ) {
+      setMessageList([])
+    } else {
+      setMessageList(chatStore.chat)
+    }
     handleChatUpdate()
-    console.log('chattttStore: ', chatStore.chat)
   }, [chatStore.chat])
 
   const handleSendMessage = () => {
@@ -36,6 +51,7 @@ export default observer(function chat({ gameStore, chatStore }: IStores) {
         messageData
       )
     }
+    setCurrentMessage('')
   }
 
   const handleChatUpdate = () => {

@@ -32,7 +32,7 @@ export interface IGameStore extends IGameStoreInfo {
   setPlayer(player: number): void
   init(): void
   submitGuess(): void
-  handleInput(e: React.KeyboardEvent | React.BaseSyntheticEvent): void
+  handleInput(e: any): void
 }
 export interface IGuessComp {
   isGuessed: boolean
@@ -55,7 +55,11 @@ export interface IChatInfo {
 export interface IChatStore {
   chat: Array<IChatData>
   setChat(newChatData: Array<IChatData>): void
-  submitMessage(username: string, roomName: string, messageData: IChatData): void
+  submitMessage(
+    username: string,
+    roomName: string,
+    messageData: IChatData
+  ): void
 }
 //
 // stores VVVVVVVVVVVVVVVVVVVVVVVVV

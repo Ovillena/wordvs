@@ -85,8 +85,8 @@ export default observer(function game({ gameStore, chatStore }: IStores) {
               isGuessed={i < gameStore.currentGuess}
             />
           ))}
-          word: {gameStore.word} <br></br>
-          guesses: {JSON.stringify(gameStore.guesses)} <br></br>
+          {/* word: {gameStore.word} <br></br>
+          guesses: {JSON.stringify(gameStore.guesses)} <br></br> */}
           is in room : {gameStore.isInRoom.toString()} <br></br>
           room name : {gameStore.roomName} <br></br>
           is turn : {gameStore.isPlayerTurn.toString()} <br></br>

@@ -5,13 +5,36 @@ import chatService from '../services/chatService'
 import { IChatData } from '../Interfaces'
 
 export default {
-  chat: [],
+  chat: [
+    {
+      roomName: '',
+      author: 0,
+      message: '',
+      time: '',
+    },
+  ],
 
   setChat(newChatData: Array<IChatData>): void {
+    if (
+      this.chat[0].roomName === '' &&
+      this.chat[0].author === 0 &&
+      this.chat[0].message === '' &&
+      this.chat[0].time === ''
+    ) {
+      this.chat.shift()
+    }
     this.chat = newChatData
   },
 
   submitMessage(username: string, roomName: string, messageData: IChatData) {
+    if (
+      this.chat[0].roomName === '' &&
+      this.chat[0].author === 0 &&
+      this.chat[0].message === '' &&
+      this.chat[0].time === ''
+    ) {
+      this.chat.shift()
+    }
     this.chat = [...this.chat, messageData]
     console.log('chat Store Chat: ', this.chat)
     console.log('chat Store messageData: ', messageData)
